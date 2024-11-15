@@ -4,6 +4,8 @@ exports.home = (req, res) => {
       <h1>Welcome, ${req.session.user.username}!</h1>
       <div>
         <p>Happy to see you again!</p>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/profile">Profile</a>
         <a href="/logout">Logout</a>
       </div>
     `);
