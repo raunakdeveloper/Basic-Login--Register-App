@@ -2,8 +2,10 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const session = require("express-session");
+
 const app = express();
 
+// Connect to the database
 connectDB();
 
 // Middleware setup
@@ -13,7 +15,7 @@ app.use(express.json());
 // Session setup
 app.use(
   session({
-    secret: "raunakkaushal",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
@@ -23,6 +25,7 @@ app.use(
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
+// Home route
 app.get("/", (req, res) => {
   res.send(`
     <p>Welcome! Explore the application by clicking the link below:</p>
@@ -31,12 +34,10 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.get("*" , (req, res) => {
+// 404 route
+app.get("*", (req, res) => {
   res.status(404).send(`Page not found <a href="/home">Go to Home</a>`);
 });
 
-// Start the server
-port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// Export the Express app for Vercel to use
+module.exports = app;
